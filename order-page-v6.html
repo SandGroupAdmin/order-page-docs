@@ -1,0 +1,808 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Order #11303842 | Gravelshop.com (Order page v6 prototype)</title>
+<!-- Static prototype of Order page v6. Customer data is placeholder text. See ../README.md -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;display=swap" rel="stylesheet">
+<style>
+/* Values copied from the live admin stylesheet (controller.asp) */
+:root{
+	--green:#0f7b46; --green-dark:#086638;
+	--blue:#2784d9; --yellow:#e6a51a; --red:#dc4c4c;
+	--text:#14213a; --text-light:#65738a; --border:#dfe5ec;
+	--bg:#f5f7fa;
+	--radius:12px; --radius-sm:8px;
+	--shadow:0 4px 18px rgba(25,45,70,.06);
+	--sidebar:272px;
+}
+*{box-sizing:border-box}
+body{margin:0}
+a{color:inherit;text-decoration:none}
+a:hover{color:var(--green)}
+:focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:4px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.admin{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:14px;min-height:100vh;display:flex;flex-direction:column}
+svg{display:block;flex-shrink:0}
+
+/* HEADER */
+.admin-header{position:relative;background:#0D6E1B;box-shadow:0 2px 6px rgba(20,33,58,.22);display:flex;flex-direction:column;z-index:5}
+.admin-header-art{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.admin-header-art:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(13,110,27,.38) 0,rgba(13,110,27,.18) 26%,rgba(13,110,27,0) 50%,rgba(13,110,27,0) 100%)}
+.admin-header-row{min-height:78px;display:flex;flex-wrap:wrap;align-items:center;position:relative;z-index:2}
+.admin-logo{width:var(--sidebar);padding:0 24px;display:flex;align-items:center;flex-shrink:0}
+.admin-logo-stack{display:flex;flex-direction:column;gap:9px}
+.admin-logo-anton{display:inline-block;font-family:'Anton',Impact,'Arial Narrow',Arial,sans-serif;font-weight:400;font-size:18px;letter-spacing:5px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.6);line-height:1;transform:scaleY(1.5);transform-origin:left center;margin-top:5px}
+.admin-logo-sub{font-size:9px;letter-spacing:2.4px;color:rgba(255,255,255,.85);font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+.admin-header-main{flex:1 1 400px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 24px;min-width:0}
+.admin-search{width:530px;position:relative;flex-shrink:1;min-width:220px}
+.admin-search input{width:100%;height:42px;padding:0 78px 0 42px;border:1px solid transparent;border-radius:var(--radius-sm);background:rgba(40,48,60,.5);font:inherit;font-size:14px;color:#fff;outline:none}
+.admin-search input::placeholder{color:#e6eaef;opacity:1}
+.admin-search input:focus{background:#000;border-color:#3a4049;box-shadow:0 0 0 3px rgba(58,64,73,.35)}
+.admin-search-icon{position:absolute;left:13px;top:12px;color:#e6eaef}
+.admin-search kbd{position:absolute;right:10px;top:10px;height:22px;padding:0 7px;border:1px solid rgba(255,255,255,.3);border-radius:5px;background:rgba(40,48,60,.35);color:#e6eaef;font:600 11px/21px inherit}
+.admin-header-actions{display:flex;align-items:center;gap:18px;flex-shrink:0}
+.admin-notification{background:none;border:0;padding:7px;cursor:pointer;color:#fff;border-radius:8px}
+.admin-notification:hover{background:rgba(255,255,255,.14)}
+.admin-user{display:flex;align-items:center;gap:9px;font-weight:600;background:none;border:0;cursor:pointer;padding:5px 7px;border-radius:9px;font-size:14px;color:#fff;font-family:inherit}
+.admin-user:hover{background:rgba(255,255,255,.14)}
+.admin-avatar{width:40px;height:40px;border-radius:50%;background:#fff;color:#0D6E1B;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
+.admin-header-links{min-height:38px;display:flex;align-items:center;padding:0 24px 6px;position:relative;z-index:1}
+.quick-links{display:flex;flex-wrap:wrap;gap:6px}
+.quick-link{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 12px;border:1px solid #c9d1d9;border-radius:6px;background:#fff;font-size:12px;font-weight:600;color:#405069;white-space:nowrap;font-family:inherit;cursor:pointer}
+.quick-link:hover{background:#fd7e14;border-color:#fd7e14;color:#fff}
+.admin-header-links .quick-link{background:rgba(40,48,60,.5);border-color:rgba(255,255,255,.25);color:#fff}
+.admin-header-links .quick-link:hover{background:#fd7e14;border-color:#fd7e14}
+
+/* SIDEBAR */
+.admin-shell{display:flex;flex-wrap:wrap;flex:1 1 auto;align-items:stretch}
+.admin-sidebar{flex:0 0 var(--sidebar);background:#fff;border-right:1px solid var(--border);display:flex}
+.admin-rail{width:72px;flex-shrink:0;border-right:1px solid var(--border);background:#fafbfc;display:flex;flex-direction:column;padding:8px 0}
+.rail-item{position:relative;height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#53627a;border-left:3px solid transparent;margin-right:3px}
+.rail-item:hover{background:#f0f3f6;color:#007bff}
+.rail-item.is-active{color:#007bff;border-left-color:#007bff;background:#fff}
+.rail-label{font-size:10px;font-weight:600;letter-spacing:.02em}
+.rail-badge{position:absolute;top:6px;right:10px;min-width:17px;height:17px;padding:0 5px;border-radius:9px;background:#2784d9;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.admin-panel{flex:1;min-width:0;padding:10px 10px 14px}
+.admin-panel ul{list-style:none;margin:0;padding:0}
+.admin-menu-title{margin:8px 12px 8px;color:#007bff;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.admin-menu-item{min-height:38px;display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:7px;color:#405069;margin-bottom:2px;background:#f7f8fc}
+.admin-menu-item:hover{background:#007bff;color:#fff}
+.admin-menu-badge{margin-left:auto;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:#2784d9;color:#fff;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+
+/* CONTENT */
+.admin-content{flex:999 1 600px;min-width:0;padding:26px 22px 40px}
+.admin-content-inner{max-width:1450px;margin:auto}
+.admin-breadcrumb{display:flex;align-items:center;gap:6px;margin-bottom:14px;font-size:12px;color:var(--text-light)}
+.admin-breadcrumb a{display:inline-flex;align-items:center;gap:5px;color:var(--text-light)}
+.admin-breadcrumb a:hover{color:var(--green)}
+.admin-breadcrumb-sep{color:#b3bcc9}
+.admin-breadcrumb-current{color:var(--text);font-weight:600}
+.admin-breadcrumb-help{margin-left:auto;font-weight:600}
+.admin-page-header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:12px 20px;margin-bottom:14px}
+.admin-page-title{margin:0 0 4px;font-size:33px;line-height:1.1;letter-spacing:-.8px}
+.admin-page-subtitle{color:var(--text-light);font-size:15px}
+.ws-head-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.viewas-bar{display:inline-flex;align-items:center;gap:8px;padding:6px 6px 6px 12px;border-radius:9px;background:#fff4cc;border:1px solid #f0d27a;color:#6b4e00;font-size:13px;margin-bottom:20px}
+.viewas-bar button{background:#6b4e00;color:#fff;border:0;border-radius:6px;padding:4px 10px;font:600 12px inherit;cursor:pointer}
+.viewas-bar button:hover{background:#4d3800}
+
+/* GRID + CARDS */
+.op-layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+.admin-grid{display:grid;gap:16px}
+.admin-grid-2{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+.stack-16{display:flex;flex-direction:column;gap:16px;min-width:0}
+.admin-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);min-width:0}
+.admin-card-header{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:17px 18px 10px}
+.admin-card-title{font-size:17px;font-weight:700}
+.admin-card-note{font-size:12px;color:var(--text-light);white-space:nowrap}
+.admin-card-link{color:var(--green);font-size:13px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.admin-card-body{padding:14px 18px 20px}
+.admin-card-header + .admin-card-body{padding-top:4px}
+
+/* KEY / VALUE */
+.kv-list{font-size:13px;line-height:1.6;margin:0}
+.kv-list > div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:8px;padding:6px 0;border-bottom:1px solid #edf0f3}
+.kv-list > div:last-child{border-bottom:0}
+.kv-list b{color:var(--text-light);font-weight:600}
+.kv-list span{color:#34425a;white-space:pre-line;overflow-wrap:anywhere}
+.text-muted{color:var(--text-light)}
+.text-red{color:var(--red)}
+.text-green{color:var(--green)}
+.ct-suggest-banner{background:#fff8e1;border:1px solid #ffe396;border-radius:8px;padding:10px 14px;margin-top:12px;font-size:13px;line-height:1.5;color:#34425a}
+.ct-suggest-banner strong{display:block;color:#6b4e00;margin-bottom:2px}
+
+/* TABLES */
+.admin-table{width:100%;border-collapse:collapse}
+.admin-table th{text-align:left;padding:10px 12px;background:#f1f4f6;color:#334158;font-size:12px;font-weight:700;white-space:nowrap}
+.admin-table th:first-child{border-radius:7px 0 0 7px}
+.admin-table th:last-child{border-radius:0 7px 7px 0}
+.admin-table td{padding:11px 12px;border-bottom:1px solid #edf0f3;font-size:13px;color:#42516a}
+.admin-table tbody tr:last-child td{border-bottom:0}
+.admin-table td a{color:var(--green);font-weight:600}
+.admin-table td small{font-size:11px}
+.donut-table{width:100%;border-collapse:collapse}
+.donut-table td{padding:7px 2px;border-bottom:1px solid #edf0f3;font-size:13px;color:#42516a}
+.donut-table tr:last-child td{border-bottom:0}
+.donut-table tr.is-total td{font-weight:700;color:var(--text);border-top:1px solid var(--border)}
+.num{text-align:right;font-weight:700;color:var(--text);white-space:nowrap}
+.pct{text-align:right;color:var(--text-light);white-space:nowrap}
+.scroll-x{overflow-x:auto}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;padding:4px 11px;border-radius:20px;font-size:12px;font-weight:500;white-space:nowrap}
+.badge-green{background:#dcf5e4;color:#147b3b}
+.badge-red{background:#fde2e2;color:#c93838}
+.badge-blue{background:#dcefff;color:#1973bd}
+.badge-yellow{background:#fff0c9;color:#9c6a09}
+.badge-grey{background:#edf0f3;color:#626d79}
+.ws-tomorrow{color:#bf7610;font-weight:700}
+
+/* SUB-PANELS INSIDE ORDER ITEM */
+.op-panel{border:1px solid var(--border);border-radius:var(--radius-sm);padding:4px 14px 10px;min-width:0}
+.op-panel-soft{background:#f7f9fb}
+.admin-menu-sub{margin:10px 0 4px;font-size:11px;font-weight:700;color:#8a96a8;text-transform:uppercase;letter-spacing:.04em}
+.op-links{display:flex;gap:12px;padding-top:6px;font-size:13px;font-weight:600}
+.op-links a{color:var(--green)}
+
+/* FORMS + BUTTONS */
+.form-input{height:40px;padding:0 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:#fff;font-size:14px;color:var(--text);font-family:inherit;outline:none;width:100%}
+.form-input:focus{border-color:#9fbcae;box-shadow:0 0 0 3px rgba(15,123,70,.10)}
+.ws-select{padding-right:32px}
+.btn-save{display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 16px;border:0;border-radius:7px;background:var(--green);color:#fff;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer}
+.btn-save:hover{background:var(--green-dark)}
+.script-actions{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:14px;padding-top:14px;border-top:1px solid #edf0f3}
+.script-actions .quick-link{background:transparent;border-color:var(--border);color:#405069}
+.script-actions .quick-link:hover{border-color:var(--green);color:var(--green);background:transparent}
+.admin-shortcut{width:100%;height:38px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 14px;border:1px solid var(--border);background:#fff;border-radius:7px;color:#405069;font-size:13px;cursor:pointer;font-family:inherit;text-align:left}
+.admin-shortcut:hover{border-color:#9bbdac;color:var(--green);background:#f8fcfa}
+.ac-tipchip{display:inline-flex;align-items:center;justify-content:center;gap:4px;height:24px;padding:0 8px;font-size:11px;font-weight:700;border:1px solid var(--border);border-radius:6px;color:var(--text-light);background:#fff}
+.ac-tipchip.is-sent{background:#dcf5e4;border-color:#a8d9b4;color:#147b3b}
+.in-check{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:#405069;white-space:nowrap;cursor:pointer}
+.op-deltime{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:10px 12px;background:#f7f9fb;border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:10px}
+.op-deltime .form-input{width:200px;height:34px;font-size:13px}
+
+/* INTERNAL NOTES */
+.notepad-text{width:100%;min-height:84px;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font:13px/1.5 inherit;color:var(--text);resize:vertical;outline:none}
+.notepad-text:focus{border-color:#9fbcae;box-shadow:0 0 0 3px rgba(15,123,70,.10)}
+.notepad-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.note-list{list-style:none;margin:14px 0 0;padding:0;border-top:1px solid #edf0f3}
+.note-item{padding:9px 0;border-bottom:1px solid #edf0f3}
+.note-item:last-child{border-bottom:0}
+.note-text{font-size:13px;color:#34425a;line-height:1.4;overflow-wrap:anywhere}
+.note-meta{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--text-light);margin-top:3px}
+.note-meta b{color:var(--green);font-weight:600}
+.note-auto .note-text{color:var(--text-light);font-size:12px}
+.note-del{background:none;border:0;padding:3px;border-radius:5px;color:var(--text-light);cursor:pointer}
+.note-del:hover{color:var(--red);background:#fdecec}
+
+/* ORDER ITEM 1 (v4) */
+.badge-orange{background:#ffe3cc;color:#b5520a}
+.oi-strip{border:1px solid var(--border);border-radius:var(--radius-sm);background:#f7f9fb}
+.oi-strip-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;padding:10px 14px}
+.oi-strip-row + .oi-strip-row{border-top:1px solid var(--border)}
+.oi-strip-item{display:flex;align-items:baseline;gap:12px;font-size:13px;color:#34425a}
+.oi-label{width:64px;flex-shrink:0;font-size:11px;font-weight:700;color:#8a96a8;text-transform:uppercase;letter-spacing:.04em}
+.oi-strong{font-weight:600;color:var(--text)}
+.oi-strip-actions{display:flex;gap:6px;align-items:center;margin-left:auto}
+.oi-strip-actions .form-input{width:190px;height:32px;font-size:13px}
+.oi-route-path{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-light);margin-left:auto}
+.oi-col{border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;min-width:0;display:flex;flex-direction:column}
+.oi-col-head{display:flex;align-items:center;gap:8px;padding:9px 14px;background:#f1f4f6;color:#334158;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--border)}
+.oi-col-head svg{color:var(--green)}
+.oi-col-body{padding:12px 14px 14px;display:flex;flex-direction:column;flex:1}
+.oi-title{font-size:15px;font-weight:700;color:var(--text);line-height:1.35}
+.oi-sub{font-size:13px;color:#42516a;margin-top:3px}
+.id-chip{display:inline-flex;align-items:center;height:18px;padding:0 6px;margin-left:4px;border-radius:4px;background:#edf0f3;color:#626d79;font-size:11px;font-weight:600;vertical-align:1px;white-space:nowrap}
+.id-chip:before{content:"#"}
+.oi-dl{display:grid;grid-template-columns:72px minmax(0,1fr);gap:8px 10px;margin:12px 0 0;padding-top:12px;border-top:1px solid #edf0f3;font-size:13px;line-height:1.45}
+.oi-dl dt{color:var(--text-light);font-weight:600}
+.oi-dl dd{margin:0;color:#34425a;overflow-wrap:anywhere}
+.oi-dl .op-links{padding-top:4px;font-size:12px}
+.oi-tiles{display:grid;gap:8px;margin-top:auto;padding-top:14px}
+.oi-tiles-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.oi-tiles-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.oi-tile{display:flex;flex-direction:column;gap:2px;padding:8px 10px;border-radius:7px;background:#f7f9fb;border:1px solid #edf0f3}
+.oi-tile span{font-size:11px;font-weight:600;color:var(--text-light);text-transform:uppercase;letter-spacing:.03em}
+.oi-tile b{font-size:15px;color:var(--text)}
+.oi-tile-good{background:#effaf3;border-color:#cdebd8}
+.oi-tile-good b{color:#147b3b}
+.oi-totals{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px}
+.oi-total{flex:1 1 220px;display:flex;align-items:baseline;gap:10px;padding:12px 14px;border:1px solid var(--border);border-radius:var(--radius-sm)}
+.oi-total span{font-size:12px;font-weight:600;color:var(--text-light)}
+.oi-total b{font-size:20px;color:var(--text)}
+.oi-total a{margin-left:auto;font-size:12px;font-weight:600;color:var(--green)}
+
+.oi-select{height:34px;font-size:13px;padding-left:10px}
+.oi-hint{display:block;font-size:12px;color:var(--text-light);margin-top:3px}
+.oi-dl dt{padding-top:7px}
+.oi-contact{display:flex;flex-direction:column;gap:3px;padding-top:6px}
+.oi-contact-name{font-weight:600;color:var(--text)}
+.oi-contact a{display:inline-flex;align-items:center;gap:6px;color:var(--green);font-weight:600}
+.oi-contact a svg{color:var(--text-light)}
+/* Status dropdown, styled like the yellow status badge */
+.status-select{appearance:none;-webkit-appearance:none;height:30px;padding:0 30px 0 12px;border:1px solid #f0d27a;border-radius:20px;background:#fff0c9 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239c6a09' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 11px center;color:#9c6a09;font:600 12px inherit;cursor:pointer}
+.status-select:hover{border-color:#e6a51a}
+.status-select:focus{outline:none;box-shadow:0 0 0 3px rgba(230,165,26,.25)}
+/* v6 */
+.oh-addr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:10px;padding-top:4px;border-top:1px solid #edf0f3;font-size:13px;line-height:1.6}
+.oh-addr span{white-space:pre-line;color:#34425a}
+.oh-map{display:inline-block;margin-top:4px;font-size:12px;font-weight:600;color:var(--green)}
+.oi-strip{overflow:hidden}
+.oi-strip-row.oi-note{background:#fff8e1;align-items:flex-start}
+.oi-note .oi-strip-item{font-size:13px;line-height:1.5;color:#34425a}
+.oi-note .oi-label{color:#9c6a09;padding-top:2px}
+/* Same breakpoint as the live admin */
+@media(max-width:1200px){
+	.op-layout,.admin-grid-2{grid-template-columns:minmax(0,1fr)}
+	.admin-search{width:340px}
+	.admin-page-title{font-size:29px}
+}
+</style>
+</head>
+<body>
+<div class="admin">
+
+	<header class="admin-header">
+		<div class="admin-header-art" aria-hidden="true">
+			<svg viewBox="0 0 1440 116" preserveAspectRatio="xMidYMax slice" width="100%" height="100%">
+				<rect width="1440" height="116" fill="#5d6b58"></rect>
+				<path d="M0 116 L0 50 C120 30 220 45 330 70 L330 116 Z" fill="#41643a"></path>
+				<path d="M700 116 L900 30 L1060 116 Z" fill="#9a9d97"></path>
+				<path d="M960 116 L1150 12 L1330 116 Z" fill="#b2b4ae"></path>
+				<path d="M1220 116 L1360 45 L1440 85 L1440 116 Z" fill="#8a8d87"></path>
+				<rect width="1440" height="116" fill="#1c2a1e" opacity="0.25"></rect>
+			</svg>
+		</div>
+		<div class="admin-header-row">
+			<div class="admin-logo">
+				<span class="admin-logo-stack">
+					<span class="admin-logo-anton">GRAVELSHOP.COM</span>
+					<span class="admin-logo-sub">ADMINISTRATION</span>
+				</span>
+			</div>
+			<div class="admin-header-main">
+				<div class="admin-search">
+					<svg class="admin-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+					<label for="adminsearch" class="sr-only">Search order, customer or supplier</label>
+					<input id="adminsearch" type="search" placeholder="Order ID, email or name...">
+					<kbd>Ctrl + K</kbd>
+				</div>
+				<div class="admin-header-actions">
+					<button class="admin-notification" type="button" aria-label="Notifications">
+						<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"></path></svg>
+					</button>
+					<button class="admin-user" type="button" aria-label="Account menu">
+						<span class="admin-avatar">COM</span><span>com</span>
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+					</button>
+				</div>
+			</div>
+		</div>
+		<nav class="admin-header-links" aria-label="Quick links">
+			<div class="quick-links">
+				<a href="#" class="quick-link">Home</a><a href="#" class="quick-link">Orders by channel</a><a href="#" class="quick-link">Bank check</a><a href="#" class="quick-link">Controller</a><a href="#" class="quick-link">Suppliers Transports</a><a href="#" class="quick-link">Order Search</a><a href="#" class="quick-link">Internal notes</a><a href="#" class="quick-link">Reset</a><a href="#" class="quick-link">Open Site</a>
+			</div>
+		</nav>
+	</header>
+
+	<div class="admin-shell" style="align-items: flex-start">
+
+		<nav class="admin-sidebar" aria-label="Administration">
+			<div class="admin-rail">
+				
+					<a href="#" class="rail-item is-active" title="Handling">
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6v3H9zM6 5h12v16H6zM9 11h6M9 15h4"></path></svg>
+						<span class="rail-label">Handling</span>
+						<span class="rail-badge">3</span>
+					</a>
+				
+					<a href="#" class="rail-item " title="Chat">
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"></path></svg>
+						<span class="rail-label">Chat</span>
+						
+					</a>
+				
+					<a href="#" class="rail-item " title="Pro">
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16v13H4zM9 7V4h6v3M12 7v13"></path></svg>
+						<span class="rail-label">Pro</span>
+						
+					</a>
+				
+					<a href="#" class="rail-item " title="Suppliers">
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V10l5 3V10l5 3V5h4v16zM3 21h18"></path></svg>
+						<span class="rail-label">Suppliers</span>
+						
+					</a>
+				
+					<a href="#" class="rail-item " title="Databases">
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zM4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"></path></svg>
+						<span class="rail-label">Databases</span>
+						
+					</a>
+				
+					<a href="#" class="rail-item " title="Schedule">
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v16H4zM4 10h16M8 3v4M16 3v4"></path></svg>
+						<span class="rail-label">Schedule</span>
+						
+					</a>
+				
+					<a href="#" class="rail-item " title="Economy">
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V10M10 21V10M14 21V10M19 21V10M2 9l10-6 10 6z"></path></svg>
+						<span class="rail-label">Economy</span>
+						<span class="rail-badge">10</span>
+					</a>
+				
+					<a href="#" class="rail-item " title="Stats">
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4v16h16M8 16v-4M12 16V8M16 16v-6"></path></svg>
+						<span class="rail-label">Stats</span>
+						
+					</a>
+				
+					<a href="#" class="rail-item " title="Content">
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6zM9 12h7M9 16h7"></path></svg>
+						<span class="rail-label">Content</span>
+						
+					</a>
+				
+					<a href="#" class="rail-item " title="Other">
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0 5 5L12 19l-3-3 7.7-7.7zM9 16l-5 5"></path></svg>
+						<span class="rail-label">Other</span>
+						
+					</a>
+				
+			</div>
+			<div class="admin-panel">
+				<div class="admin-menu-title">Handling</div>
+				<ul>
+					
+						<li><a href="#" class="admin-menu-item">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7M7 19a2 2 0 1 0 0-.01M17 19a2 2 0 1 0 0-.01"></path></svg>Orders waiting send
+							<span class="admin-menu-badge">2</span>
+						</a></li>
+					
+						<li><a href="#" class="admin-menu-item">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v16H4zM4 10h16M8 3v4M16 3v4"></path></svg>Orders by order date
+							
+						</a></li>
+					
+						<li><a href="#" class="admin-menu-item">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2"></path></svg>Orders by delivery time
+							
+						</a></li>
+					
+						<li><a href="#" class="admin-menu-item">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 16H3zM12 10v4M12 17v.01"></path></svg>Orders in red zone
+							
+						</a></li>
+					
+						<li><a href="#" class="admin-menu-item">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6v5H9zM3 16h6v5H3zM15 16h6v5h-6zM12 8v4M6 16v-4h12v4"></path></svg>Orders by channel
+							
+						</a></li>
+					
+						<li><a href="#" class="admin-menu-item">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-3.5-3.5"></path></svg>Order Search
+							
+						</a></li>
+					
+						<li><a href="#" class="admin-menu-item">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h14v18H5zM8 7h8M8 12h2M14 12h2M8 16h2M14 16h2"></path></svg>Calculations
+							
+						</a></li>
+					
+						<li><a href="#" class="admin-menu-item">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18v14H3zM3 7l9 6 9-6"></path></svg>Messages
+							<span class="admin-menu-badge">1</span>
+						</a></li>
+					
+						<li><a href="#" class="admin-menu-item">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6zM9 12h7M9 16h5"></path></svg>Quotes sent
+							
+						</a></li>
+					
+						<li><a href="#" class="admin-menu-item">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18v14H3zM3 7l9 6 9-6M15 15l2 2 4-4"></path></svg>Email log
+							
+						</a></li>
+					
+						<li><a href="#" class="admin-menu-item">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h14v18H5zM8 7h8M8 11h8M8 15h5"></path></svg>Internal notes
+							
+						</a></li>
+					
+				</ul>
+			</div>
+		</nav>
+
+		<main class="admin-content">
+			<div class="admin-content-inner">
+
+				<nav class="admin-breadcrumb" aria-label="Breadcrumb">
+					<a href="#"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg>Home</a>
+					<svg class="admin-breadcrumb-sep" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+					<span>Handling</span>
+					<svg class="admin-breadcrumb-sep" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+					<span class="admin-breadcrumb-current" aria-current="page">Order #11303842</span>
+					<a href="#" class="admin-breadcrumb-help"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14"></path><path d="M12 17.5v.01"></path></svg>Help</a>
+				</nav>
+
+				<div class="admin-page-header">
+					<div>
+						<h1 class="admin-page-title">Order #11303842</h1>
+						<div class="admin-page-subtitle">Created 05-11-2026 21:34 · 14 ton Driveway Gravel #57 Gray (3/4") · Delivery Thursday 11/12/2026</div>
+					</div>
+					<div class="ws-head-actions">
+						<label for="order-status" class="sr-only">Order status</label>
+						<select id="order-status" class="status-select">
+							<option selected="">Waiting delivery Thursday</option>
+							<option>Need to ring the order in</option>
+							<option>Find source</option>
+							<option>Waiting payment</option>
+							<option>Orders to process</option>
+						</select>
+						<span class="badge badge-green">Process 250 Completed</span>
+					</div>
+				</div>
+
+				<div class="viewas-bar" role="status">
+					<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 16H3z"></path><path d="M12 10v4M12 17v.01"></path></svg>
+					<b>Manual status</b><span>(flo) Set up. (10/11)</span>
+					<button type="button">Clear</button>
+				</div>
+
+				<div class="op-layout">
+
+					<!-- MAIN: order information -->
+					<div class="stack-16">
+
+						<div class="admin-grid admin-grid-2">
+
+							<!-- Order head -->
+							<section class="admin-card" aria-labelledby="oh-h">
+								<div class="admin-card-header"><div class="admin-card-title" id="oh-h">Order head</div><span class="admin-card-note">#11303842</span></div>
+								<div class="admin-card-body">
+									<div class="kv-list">
+										
+											<div><b>Created</b><span>05-11-2026 21:34</span></div>
+										
+											<div><b>Company</b><span>—</span></div>
+										
+											<div><b>Email</b><span>[Customer email]</span></div>
+										
+											<div><b>Phone</b><span>[Phone]  (Worcester, MA)</span></div>
+										
+											<div><b>IP</b><span>[IP address]  (US-IN)</span></div>
+										
+											<div><b>Payment</b><span>Stripe</span></div>
+										
+									</div>
+									<div class="oh-addr">
+										<div>
+											<div class="admin-menu-sub">Billing</div>
+											<span>[Customer name]
+[Street address]
+[ZIP] [City]</span>
+										</div>
+										<div>
+											<div class="admin-menu-sub">Delivery</div>
+											<span>[Customer name]
+[Street address]
+[ZIP] [City]</span>
+											<a href="#" class="oh-map">Open in map</a>
+										</div>
+									</div>
+									<div class="ct-suggest-banner">
+										<strong>Customer note</strong>
+										Please have the driver pull up to the top of the driveway, roughly 155 feet from the road, and pull into the turnaround circle. Drop-off point is on the far side of the circle, against the large gravel wall. Location will be clearly marked; customer will be on site.
+									</div>
+								</div>
+							</section>
+
+							<div class="stack-16">
+								<!-- Payment & costs -->
+								<section class="admin-card" aria-labelledby="pc-h">
+									<div class="admin-card-header"><div class="admin-card-title" id="pc-h">Payment &amp; costs</div><a href="#" class="admin-card-link">Set unpaid</a></div>
+									<div class="admin-card-body">
+										<table class="donut-table">
+											<tbody>
+												<tr><td>Payment date</td><td class="num">05-11-2026</td><td></td></tr>
+												<tr><td>Payment</td><td class="num">641.27</td><td></td></tr>
+												<tr><td>Registered paid</td><td class="num"><span class="badge badge-green">yes</span></td><td class="pct">method 10</td></tr>
+												<tr><td>Sales tax</td><td class="num">44.89</td><td></td></tr>
+												<tr><td><a href="#" class="text-green" style="font-weight: 600">Order costs</a></td><td class="num">570.00</td><td></td></tr>
+												<tr class="is-total"><td>Profit</td><td class="num">71.27</td><td class="pct">11.11%</td></tr>
+											</tbody>
+										</table>
+										<div class="admin-menu-sub" style="margin-top: 16px">Customer price</div>
+										<table class="donut-table">
+											<tbody>
+												
+													<tr><td>County</td><td class="num">Brown County, IN</td></tr>
+												
+													<tr><td>Sum plus tax</td><td class="num">641.27</td></tr>
+												
+													<tr><td>Sum tax free</td><td class="num">0.00</td></tr>
+												
+													<tr><td>Tax (7%)</td><td class="num">44.89</td></tr>
+												
+												<tr class="is-total"><td>Price incl. tax</td><td class="num">686.16</td></tr>
+											</tbody>
+										</table>
+										<div class="kv-list" style="margin-top: 12px; padding-top: 6px; border-top: 1px solid #edf0f3">
+											<div><b>Transaction</b><span>05-11-2026 21:34:26 · Stripe · 68616</span></div>
+											<div><b>Status</b><span><span class="badge badge-green">OK · Authorized</span></span></div>
+										</div>
+									</div>
+								</section>
+
+								<!-- Send notifications (under Payment & costs) -->
+								<section class="admin-card" aria-labelledby="sn-h">
+									<div class="admin-card-header"><div class="admin-card-title" id="sn-h">Send notifications</div></div>
+									<div class="admin-card-body" style="display: flex; flex-direction: column; gap: 8px">
+										
+											<button type="button" class="admin-shortcut">
+												<span>Payment has been received</span>
+												
+													<span class="ac-tipchip is-sent"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg>Sent</span>
+												
+											</button>
+										
+											<button type="button" class="admin-shortcut">
+												<span>Order confirmation</span>
+												
+													<span class="ac-tipchip is-sent"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg>Sent</span>
+												
+											</button>
+										
+											<button type="button" class="admin-shortcut">
+												<span>Letter of liability link</span>
+												
+											</button>
+										
+									</div>
+								</section>
+							</div>
+						</div>
+
+						<!-- Items -->
+						<section class="admin-card" aria-labelledby="it-h">
+							<div class="admin-card-header"><div class="admin-card-title" id="it-h">Items</div><span class="admin-card-note">1 line</span></div>
+							<div class="admin-card-body">
+								<div class="scroll-x">
+									<table class="admin-table" style="min-width: 760px">
+										<thead><tr><th>Amount</th><th>Product</th><th>Method</th><th>Supplier · transport</th><th>Material</th><th>Transport</th><th>Delivery</th></tr></thead>
+										<tbody>
+											<tr>
+												<td class="num" style="text-align: left">14 ton</td>
+												<td>Driveway Gravel #57 Gray (3/4")</td>
+												<td>Tipload (ton)</td>
+												<td>Rogers Group – Indiana<br><small class="text-muted">Transport: Rogers Group – Indiana</small></td>
+												<td><span class="badge badge-red">Not sent</span></td>
+												<td><span class="badge badge-red">Not sent</span></td>
+												<td style="white-space: nowrap"><span class="ws-tomorrow">Thursday</span> 12-11-2026 08:00</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</section>
+
+						<!-- Order item 1 (v6: customer note moved into the delivery strip; v5: dropdowns, visible contact details, decimal prices) -->
+						<section class="admin-card" aria-labelledby="oi-h">
+							<div class="admin-card-header"><div class="admin-card-title" id="oi-h">Order item 1 <span class="text-muted" style="font-weight: 500">· 517527</span></div><span class="admin-card-note">14 ton · Tipload (ton)</span></div>
+							<div class="admin-card-body">
+
+								<!-- Delivery + route -->
+								<div class="oi-strip">
+									<div class="oi-strip-row">
+										<div class="oi-strip-item">
+											<span class="oi-label">Delivery</span>
+											<span class="oi-strong"><span class="ws-tomorrow">Thursday morning</span> · 8:00 AM – 12:00 PM · 11/12/2026</span>
+										</div>
+										<span class="oi-strip-actions">
+											<label for="deltime" class="sr-only">New delivery time</label>
+											<select id="deltime" class="form-input ws-select"><option>- select date time -</option></select>
+											<button type="button" class="quick-link">Change</button>
+										</span>
+									</div>
+									<div class="oi-strip-row oi-route">
+										<div class="oi-strip-item">
+											<span class="oi-label">Route</span>
+											<span><b>44.9 km</b> · 43 mins</span>
+										</div>
+										<div class="oi-route-path">
+											<span>109 N Oard Rd, Bloomington, IN 47404</span>
+											<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+											<span>[Delivery address]</span>
+										</div>
+									</div>
+								</div>
+
+								<div class="admin-grid admin-grid-2" style="margin-top: 14px">
+
+									<!-- Material -->
+									<div class="oi-col">
+										<div class="oi-col-head">
+											<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5 9 5z"></path><path d="M3 8v8l9 5 9-5V8"></path></svg>
+											Material
+										</div>
+										<div class="oi-col-body">
+											<div class="oi-title">Driveway Gravel #57 Gray (3/4")</div>
+											<div class="oi-sub">14 ton</div>
+											<div class="oi-sub text-muted">Subname: 3/4" Crushed Stone · INDname: 3/4 no fines</div>
+
+											<dl class="oi-dl">
+												<dt>Supplier</dt>
+												<dd><label for="mat-supplier" class="sr-only">Supplier</label><select id="mat-supplier" class="form-input ws-select oi-select"><option selected="">Rogers Group – Indiana</option><option>Other supplier…</option></select><span class="oi-hint">Online account · net 30</span></dd>
+												<dt>Pickup</dt>
+												<dd><label for="mat-pickup" class="sr-only">Pickup location</label><select id="mat-pickup" class="form-input ws-select oi-select"><option selected="">Rogers Group (Bloomington Crushed Stone)</option><option>Other location…</option></select>
+													<span class="op-links"><a href="#">Alternatives</a><a href="#">Orders in area</a></span></dd>
+												<dt>Contact</dt>
+												<dd class="oi-contact">
+													<span class="oi-contact-name">[Contact name]</span>
+													<a href="#"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg>812-333-8560</a>
+													<a href="#"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg>[contact email]</a>
+												</dd>
+											</dl>
+										</div>
+									</div>
+
+									<!-- Transport -->
+									<div class="oi-col">
+										<div class="oi-col-head">
+											<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="13" height="10" rx="1"></rect><path d="M15 10h4l3 3v4h-7"></path><circle cx="6" cy="18" r="2"></circle><circle cx="18" cy="18" r="2"></circle></svg>
+											Transport
+										</div>
+										<div class="oi-col-body">
+											<div class="oi-title">Rogers Group Bloomington 30-60 (T)</div>
+											<div class="oi-sub">Tipload (ton)</div>
+											<div class="oi-sub text-muted">Delivery 1–3 days</div>
+
+											<dl class="oi-dl">
+												<dt>Company</dt>
+												<dd><label for="tr-company" class="sr-only">Transport company</label><select id="tr-company" class="form-input ws-select oi-select"><option selected="">Rogers Group – Indiana</option><option>Other company…</option></select><span class="oi-hint">Online account · net 30</span></dd>
+												<dt>From</dt>
+												<dd><label for="tr-from" class="sr-only">Transport from</label><select id="tr-from" class="form-input ws-select oi-select"><option selected="">Rogers Group (Bloomington Crushed Stone)</option><option>Other location…</option></select></dd>
+												<dt>Contact</dt>
+												<dd class="oi-contact">
+													<span class="oi-contact-name">[Contact name]</span>
+													<a href="#"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg>812-333-8560</a>
+													<a href="#"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg>[contact email]</a>
+												</dd>
+											</dl>
+										</div>
+									</div>
+								</div>
+
+								<!-- Pricing, below the Material and Transport boxes -->
+								<div class="admin-grid admin-grid-2" style="margin-top: 12px">
+									<div class="op-panel op-panel-soft">
+										<div class="admin-menu-sub">Product pricing</div>
+										<table class="donut-table"><tbody>
+											<tr><td>Product buy</td><td class="num">18.90</td></tr>
+											<tr><td>Product sell</td><td class="num">25.33</td></tr>
+											<tr><td>Product sum</td><td class="num">264.60</td></tr>
+											<tr><td>Product profit</td><td class="num text-green">90.02</td></tr>
+										</tbody></table>
+									</div>
+									<div class="op-panel op-panel-soft">
+										<div class="admin-menu-sub">Transport pricing &amp; totals</div>
+										<table class="donut-table"><tbody>
+											<tr><td>Transport cost</td><td class="num">220.50</td></tr>
+											<tr><td>Transport profit</td><td class="num text-green">66.15</td></tr>
+											<tr class="is-total"><td>Price total</td><td class="num">641.27</td></tr>
+											<tr><td>Tax total</td><td class="num text-red">44.89</td></tr>
+										</tbody></table>
+										<div class="op-links"><a href="#">Recalculate sum</a><a href="#">Recalculate tax</a></div>
+									</div>
+								</div>
+
+								<div class="script-actions">
+									<button type="button" class="quick-link">Make one company pdf</button>
+									<button type="button" class="quick-link">Send one company pdf</button>
+									<button type="button" class="quick-link">Make pickup pdf</button>
+									<button type="button" class="quick-link">Send pickup pdf</button>
+									<button type="button" class="quick-link">Send haul order</button>
+								</div>
+							</div>
+						</section>
+					</div>
+
+					<!-- RIGHT: internal notes -->
+					<aside class="admin-card" aria-labelledby="in-h">
+						<div class="admin-card-header"><div class="admin-card-title" id="in-h">Internal notes</div><a href="#" class="admin-card-link">All notes</a></div>
+						<div class="admin-card-body">
+							<label for="newnote" class="sr-only">Add internal note</label>
+							<textarea id="newnote" class="notepad-text" placeholder="Add internal note..."></textarea>
+							<div class="notepad-actions">
+								<label class="in-check"><input type="checkbox"> Pin to top</label>
+								<button type="button" class="btn-save">Save</button>
+							</div>
+							<ul class="note-list">
+								
+									<li class="note-item ">
+										<div class="note-text">Set up.</div>
+										<div class="note-meta">
+											<span><b>flo</b> · 10-11-2026 14:12</span>
+											
+												<button type="button" class="note-del" aria-label="Delete note">
+													<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+												</button>
+											
+										</div>
+									</li>
+								
+									<li class="note-item note-auto">
+										<div class="note-text">Status changed to: Waiting delivery Thursday</div>
+										<div class="note-meta">
+											<span><b>system (flo)</b> · 10-11-2026 14:12</span>
+											
+										</div>
+									</li>
+								
+									<li class="note-item ">
+										<div class="note-text">Rogers has #7 which are 1/2&quot;-1&quot;. Price is 39–40/ton + price, $530–$570 +/- total</div>
+										<div class="note-meta">
+											<span><b>flo</b> · 10-11-2026 14:12</span>
+											
+												<button type="button" class="note-del" aria-label="Delete note">
+													<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+												</button>
+											
+										</div>
+									</li>
+								
+									<li class="note-item ">
+										<div class="note-text">Stacy emailed: &quot;We do not carry 57&#x27;s. We have several types of stone that can fit in the 3/4 inch range with no fines that can be used for driveways.&quot;</div>
+										<div class="note-meta">
+											<span><b>flo</b> · 10-11-2026 13:59</span>
+											
+												<button type="button" class="note-del" aria-label="Delete note">
+													<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+												</button>
+											
+										</div>
+									</li>
+								
+									<li class="note-item note-auto">
+										<div class="note-text">Status changed to: Need to ring the order in</div>
+										<div class="note-meta">
+											<span><b>system (sdp)</b> · 09-11-2026 16:18</span>
+											
+										</div>
+									</li>
+								
+									<li class="note-item ">
+										<div class="note-text">Do not send POs anymore, they want us to call to RI 812-333-8560</div>
+										<div class="note-meta">
+											<span><b>sdp</b> · 09-11-2026 16:18</span>
+											
+												<button type="button" class="note-del" aria-label="Delete note">
+													<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+												</button>
+											
+										</div>
+									</li>
+								
+									<li class="note-item note-auto">
+										<div class="note-text">Status changed to: Waiting delivery Thursday</div>
+										<div class="note-meta">
+											<span><b>system (mac)</b> · 05-11-2026 22:04</span>
+											
+										</div>
+									</li>
+								
+							</ul>
+						</div>
+					</aside>
+
+				</div>
+			</div>
+		</main>
+	</div>
+</div>
+</body>
+</html>

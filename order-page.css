@@ -1,0 +1,69 @@
+/* ORDER PAGE (order.asp)
+ * Order page v6 - rules to add to the Gravelshop admin stylesheet.
+ * Uses the existing :root variables (--green, --text, --border, ...) and
+ * reuses existing classes (admin-card, kv-list, donut-table, badge-*, ...).
+ * See README.md for the full documentation.
+ */
+
+/* Layout */
+.op-layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+.stack-16{display:flex;flex-direction:column;gap:16px;min-width:0}
+.admin-grid-2{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+.scroll-x{overflow-x:auto}
+
+/* Small additions to shared parts */
+.kv-list > div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:8px;padding:6px 0;border-bottom:1px solid #edf0f3}
+.kv-list > div:last-child{border-bottom:0}
+.donut-table tr.is-total td{font-weight:700;color:var(--text);border-top:1px solid var(--border)}
+.viewas-bar{display:inline-flex;padding:6px 6px 6px 12px;margin-bottom:20px}
+.viewas-bar button{background:#6b4e00;color:#fff;border:0;border-radius:6px;padding:4px 10px;font:600 12px inherit;cursor:pointer}
+
+/* Status dropdown, styled like badge-yellow */
+.status-select{appearance:none;-webkit-appearance:none;height:30px;padding:0 30px 0 12px;border:1px solid #f0d27a;border-radius:20px;background:#fff0c9 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239c6a09' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 11px center;color:#9c6a09;font:600 12px inherit;cursor:pointer}
+.status-select:hover{border-color:#e6a51a}
+.status-select:focus{outline:none;box-shadow:0 0 0 3px rgba(230,165,26,.25)}
+
+/* Order head addresses */
+.oh-addr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:10px;padding-top:4px;border-top:1px solid #edf0f3;font-size:13px;line-height:1.6}
+.oh-addr span{white-space:pre-line;color:#34425a}
+.oh-map{display:inline-block;margin-top:4px;font-size:12px;font-weight:600;color:var(--green)}
+
+/* Order item: delivery strip */
+.oi-strip{border:1px solid var(--border);border-radius:var(--radius-sm);background:#f7f9fb;overflow:hidden}
+.oi-strip-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;padding:10px 14px}
+.oi-strip-row + .oi-strip-row{border-top:1px solid var(--border)}
+.oi-strip-item{display:flex;align-items:baseline;gap:12px;font-size:13px;color:#34425a}
+.oi-label{width:64px;flex-shrink:0;font-size:11px;font-weight:700;color:#8a96a8;text-transform:uppercase;letter-spacing:.04em}
+.oi-strong{font-weight:600;color:var(--text)}
+.oi-strip-actions{display:flex;gap:6px;align-items:center;margin-left:auto}
+.oi-strip-actions .form-input{width:190px;height:32px;font-size:13px}
+.oi-route-path{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-light);margin-left:auto}
+
+/* Order item: Material / Transport columns */
+.oi-col{border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;min-width:0;display:flex;flex-direction:column}
+.oi-col-head{display:flex;align-items:center;gap:8px;padding:9px 14px;background:#f1f4f6;color:#334158;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--border)}
+.oi-col-head svg{color:var(--green)}
+.oi-col-body{padding:12px 14px 14px;display:flex;flex-direction:column;flex:1}
+.oi-title{font-size:15px;font-weight:700;color:var(--text);line-height:1.35}
+.oi-sub{font-size:13px;color:#42516a;margin-top:3px}
+.oi-dl{display:grid;grid-template-columns:72px minmax(0,1fr);gap:8px 10px;margin:12px 0 0;padding-top:12px;border-top:1px solid #edf0f3;font-size:13px;line-height:1.45}
+.oi-dl dt{color:var(--text-light);font-weight:600;padding-top:7px}
+.oi-dl dd{margin:0;color:#34425a;overflow-wrap:anywhere}
+.oi-select{height:34px;font-size:13px;padding-left:10px}
+.oi-hint{display:block;font-size:12px;color:var(--text-light);margin-top:3px}
+.oi-contact{display:flex;flex-direction:column;gap:3px;padding-top:6px}
+.oi-contact-name{font-weight:600;color:var(--text)}
+.oi-contact a{display:inline-flex;align-items:center;gap:6px;color:var(--green);font-weight:600}
+.oi-contact a svg{color:var(--text-light)}
+
+/* Order item: pricing panels */
+.op-panel{border:1px solid var(--border);border-radius:var(--radius-sm);padding:4px 14px 10px;min-width:0}
+.op-panel-soft{background:#f7f9fb}
+.op-links{display:flex;gap:12px;padding-top:6px;font-size:13px;font-weight:600}
+.op-links a{color:var(--green)}
+.oi-dl .op-links{padding-top:4px;font-size:12px}
+
+/* Same breakpoint as the rest of the admin */
+@media(max-width:1200px){
+  .op-layout,.admin-grid-2{grid-template-columns:minmax(0,1fr)}
+}
